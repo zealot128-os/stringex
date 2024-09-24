@@ -10,7 +10,13 @@ require 'stringex/version'
 
 require 'stringex/core_ext'
 
-Stringex::ActsAsUrl::Adapter.load_available
+if defined?(::ActiveRecord) && defined?(::ActiveSupport)
+  ::ActiveSupport.on_load(:active_record) do
+    Stringex::ActsAsUrl::Adapter.load_available
+  end
+else
+  Stringex::ActsAsUrl::Adapter.load_available
+end
 
 if defined?(Rails::Railtie)
   require 'stringex/rails/railtie'
